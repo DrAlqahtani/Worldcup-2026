@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<title>نموذج توقع كأس العالم 2026 — بواسون × مونت كارلو</title>
+<link href="https://fonts.googleapis.com/css2?family=Lalezar&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pitch:#0C1A12;
+  --panel:#10231A;
+  --panel2:#0E1F16;
+  --line:#23493A;
+  --chalk:#E9F4EC;
+  --muted:#8FB3A0;
+  --gold:#E8B84B;
+  --gold-dim:#9A7B33;
+  --saudi:#2BB673;
+  --saudi-deep:#0E5C3A;
+  --danger:#D96C5F;
+  --display:'Lalezar',cursive;
+  --body:'IBM Plex Sans Arabic',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;background:#0C1A12;color-scheme:dark}
+body{
+  background:var(--pitch);
+  color:var(--chalk);
+  font-family:var(--body);
+  font-weight:300;
+  line-height:1.7;
+}
+/* mowed-grass stripes in hero */
+.hero{
+  position:relative;
+  padding:64px 24px 48px;
+  background:
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.018) 0 90px, rgba(0,0,0,0.05) 90px 180px),
+    radial-gradient(ellipse at 50% -20%, #1A4029 0%, var(--pitch) 65%);
+  border-bottom:1px solid var(--line);
+  text-align:center;
+  overflow:hidden;
+}
+.hero::after{
+  content:"";
+  position:absolute;inset:auto 0 0 0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  opacity:.6;
+}
+.hero .eyebrow{
+  font-size:13px;letter-spacing:.12em;color:var(--gold);
+  text-transform:uppercase;margin-bottom:10px;font-weight:500;
+}
+.hero h1{
+  font-family:var(--display);
+  font-size:clamp(34px,6vw,64px);
+  line-height:1.15;
+  font-weight:400;
+}
+.hero h1 .gold{color:var(--gold)}
+.hero p.sub{color:var(--muted);max-width:680px;margin:14px auto 0;font-size:15px}
+.controls{
+  display:flex;gap:12px;justify-content:center;align-items:center;
+  margin-top:28px;flex-wrap:wrap;
+}
+select,button.run{
+  font-family:var(--body);font-size:15px;
+  background:var(--panel);color:var(--chalk);
+  border:1px solid var(--line);border-radius:8px;
+  padding:10px 18px;cursor:pointer;
+}
+button.run{
+  background:var(--gold);color:#1A1407;font-weight:700;border:none;
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+button.run:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(232,184,75,.25)}
+button.run:disabled{opacity:.5;cursor:wait;transform:none;box-shadow:none}
+.progress{
+  height:6px;max-width:420px;margin:18px auto 0;border-radius:3px;
+  background:var(--panel);overflow:hidden;border:1px solid var(--line);
+  visibility:hidden;
+}
+.progress .bar{height:100%;width:0%;background:linear-gradient(90deg,var(--saudi),var(--gold));transition:width .12s linear}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+section{padding:48px 0 8px}
+h2{
+  font-family:var(--display);font-weight:400;
+  font-size:clamp(24px,3.4vw,34px);margin-bottom:6px;
+}
+.sec-note{color:var(--muted);font-size:14px;margin-bottom:22px}
+/* contenders bars */
+.contender{
+  display:grid;grid-template-columns:34px 150px 1fr 72px;
+  align-items:center;gap:12px;padding:9px 0;
+  border-bottom:1px dashed rgba(35,73,58,.6);
+}
+.contender .flag{font-size:22px;text-align:center}
+.contender .name{font-weight:500;font-size:15px}
+.contender .track{height:18px;background:var(--panel2);border-radius:4px;overflow:hidden}
+.contender .fill{
+  height:100%;border-radius:4px;
+  background:linear-gradient(90deg,var(--gold-dim),var(--gold));
+  width:0%;transition:width .8s cubic-bezier(.2,.8,.2,1);
+}
+.contender.is-ksa .fill{background:linear-gradient(90deg,var(--saudi-deep),var(--saudi))}
+.contender .pct{font-family:var(--display);font-size:20px;color:var(--gold);text-align:left}
+.contender.is-ksa .pct{color:var(--saudi)}
+/* saudi card */
+.ksa-card{
+  margin-top:8px;
+  border:1px solid var(--saudi-deep);
+  background:linear-gradient(135deg, rgba(14,92,58,.25), rgba(12,26,18,.4));
+  border-radius:14px;padding:26px 26px 20px;position:relative;overflow:hidden;
+}
+.ksa-card::before{
+  content:"🇸🇦";position:absolute;left:-18px;top:-30px;font-size:140px;opacity:.07;
+}
+.ksa-card h3{font-family:var(--display);font-weight:400;font-size:24px;color:var(--saudi);margin-bottom:4px}
+.ksa-card .ksa-sub{color:var(--muted);font-size:14px;margin-bottom:18px}
+.stage-row{display:flex;gap:10px;flex-wrap:wrap}
+.stage{
+  flex:1;min-width:96px;background:var(--panel2);
+  border:1px solid var(--line);border-radius:10px;
+  padding:12px 8px;text-align:center;
+}
+.stage .lbl{font-size:12px;color:var(--muted);margin-bottom:2px}
+.stage .val{font-family:var(--display);font-size:26px;color:var(--chalk)}
+.stage.hot .val{color:var(--saudi)}
+/* groups */
+.groups-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(265px,1fr));gap:16px}
+.gcard{
+  background:var(--panel);border:1px solid var(--line);border-radius:12px;
+  overflow:hidden;
+}
+.gcard .ghead{
+  font-family:var(--display);font-size:18px;padding:10px 16px;
+  background:var(--panel2);border-bottom:1px solid var(--line);
+  display:flex;justify-content:space-between;align-items:baseline;
+}
+.gcard .ghead .gletter{color:var(--gold)}
+.gcard .ghead .ghint{font-family:var(--body);font-size:11px;color:var(--muted);font-weight:300}
+.trow{
+  display:grid;grid-template-columns:30px 1fr 56px 60px;
+  align-items:center;gap:6px;padding:8px 14px;font-size:14px;
+  border-bottom:1px solid rgba(35,73,58,.35);
+}
+.trow:last-child{border-bottom:none}
+.trow .tflag{font-size:18px;text-align:center}
+.trow .tname{font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.trow .twin{font-size:12px;color:var(--muted);text-align:left}
+.trow .tq{
+  font-family:var(--display);font-size:17px;text-align:left;
+}
+.trow.q-high .tq{color:var(--saudi)}
+.trow.q-mid .tq{color:var(--gold)}
+.trow.q-low .tq{color:var(--danger)}
+.trow.is-ksa{background:rgba(43,182,115,.08)}
+/* full table */
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
+table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:760px}
+thead th{
+  font-family:var(--body);font-weight:600;font-size:12px;color:var(--muted);
+  background:var(--panel2);padding:10px 12px;text-align:center;
+  border-bottom:1px solid var(--line);position:sticky;top:0;
+}
+thead th:first-child{text-align:right}
+tbody td{padding:8px 12px;text-align:center;border-bottom:1px solid rgba(35,73,58,.35)}
+tbody td:first-child{text-align:right;font-weight:500;white-space:nowrap}
+tbody tr:hover{background:rgba(35,73,58,.18)}
+tbody tr.is-ksa{background:rgba(43,182,115,.1)}
+td.champ{font-family:var(--display);font-size:16px;color:var(--gold)}
+tr.is-ksa td.champ{color:var(--saudi)}
+.heat{display:inline-block;min-width:46px;padding:1px 6px;border-radius:4px}
+/* methodology */
+.method{
+  background:var(--panel);border:1px solid var(--line);border-radius:12px;
+  padding:24px;font-size:14px;color:var(--muted);margin-bottom:60px;
+}
+.method strong{color:var(--chalk);font-weight:600}
+.method code{
+  font-family:monospace;background:var(--panel2);padding:1px 7px;border-radius:4px;
+  color:var(--gold);direction:ltr;display:inline-block;
+}
+footer{
+  text-align:center;color:var(--muted);font-size:12.5px;
+  padding:18px 0 36px;border-top:1px solid var(--line);
+}
+@media (max-width:600px){
+  .contender{grid-template-columns:28px 105px 1fr 56px}
+  .contender .name{font-size:13px}
+  .stage{min-width:84px}
+}
+@media (prefers-reduced-motion: reduce){
+  .contender .fill{transition:none}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="eyebrow">POISSON × MONTE CARLO — FIFA WORLD CUP 2026</div>
+  <h1 id="t-title">نموذج توقع <span class="gold">كأس العالم 2026</span></h1>
+  <p class="sub" id="t-sub"></p>
+  <div class="controls">
+    <label for="iters" style="color:var(--muted);font-size:14px" id="t-iters"></label>
+    <select id="iters">
+      <option value="2000">2,000 (سريع)</option>
+      <option value="10000" selected>10,000 (موصى به)</option>
+      <option value="20000">20,000 (دقة أعلى)</option>
+    </select>
+    <button class="run" id="runBtn" onclick="runSim()"></button>
+    <button class="run" id="langBtn" style="background:var(--panel);color:var(--chalk);border:1px solid var(--line)" onclick="toggleLang()">English</button>
+  </div>
+  <div class="progress" id="prog"><div class="bar" id="progBar"></div></div>
+</div>
+
+<div class="wrap">
+
+<section id="sec-contenders">
+  <h2 id="t-h-cont"></h2>
+  <div class="sec-note" id="t-n-cont"></div>
+  <div id="contenders"></div>
+</section>
+
+<section id="sec-ksa">
+  <h2 style="color:var(--saudi)" id="t-h-ksa"></h2>
+  <div class="sec-note" id="t-n-ksa"></div>
+  <div class="ksa-card" id="ksaCard">
+    <h3 id="t-ksa-card"></h3>
+    <div class="ksa-sub" id="ksaSub"></div>
+    <div class="stage-row" id="ksaStages"></div>
+  </div>
+</section>
+
+<section id="sec-groups">
+  <h2 id="t-h-grp"></h2>
+  <div class="sec-note" id="t-n-grp"></div>
+  <div class="groups-grid" id="groups"></div>
+</section>
+
+<section id="sec-table">
+  <h2 id="t-h-tbl"></h2>
+  <div class="sec-note" id="t-n-tbl"></div>
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th id="th0"></th><th id="th1"></th><th id="th2"></th><th id="th3"></th>
+          <th id="th4"></th><th id="th5"></th><th id="th6"></th><th id="th7"></th>
+        </tr>
+      </thead>
+      <tbody id="tblBody"></tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2 id="t-h-meth"></h2>
+  <div class="method" id="methodBody">
+    <p><strong>1) قوة المنتخبات:</strong> تقييم Elo تقديري لكل منتخب (محدَّث حتى يونيو 2026 بناءً على نتائج التصفيات والوديات). أفضلية أرض <code>+60</code> نقطة Elo للمستضيفين (أمريكا، كندا، المكسيك).</p>
+    <p><strong>2) محاكاة المباراة:</strong> فارق التقييم <code>dr = elo_A − elo_B</code> يُترجم لمعدل أهداف متوقع لكل فريق: <code>λ_A = 1.32 × e^(dr/480)</code> ثم تُسحب الأهداف من توزيع بواسون <code>Goals ~ Poisson(λ)</code>. في الأدوار الإقصائية: تعادل ← وقت إضافي (بواسون بثلث المعدل) ← ركلات ترجيح مرجّحة بفارق Elo.</p>
+    <p><strong>3) هيكل البطولة:</strong> 12 مجموعة × 4، يتأهل الأول والثاني + أفضل 8 ثوالث (ترتيب الثوالث: نقاط ← فارق أهداف ← أهداف مسجلة). توزيع أصحاب المركز الثالث على شجرة دور الـ32 وفق قيود الجدول الرسمي (بتقريب عشوائي عند تعدد الحلول الصالحة).</p>
+    <p><strong>4) مونت كارلو:</strong> تُعاد محاكاة البطولة كاملة آلاف المرات، والاحتمال = نسبة مرات بلوغ المنتخب للدور. هامش الخطأ عند 10,000 محاكاة ≈ ±1%.</p>
+    <p style="margin-top:8px"><strong>تنبيه:</strong> النموذج لا يأخذ بالاعتبار الإصابات، جاهزية اللاعبين، أو عوامل تكتيكية — تقييم Elo يلخّص القوة التاريخية الحديثة فقط.</p>
+  </div>
+</section>
+
+</div>
+
+<footer id="t-footer"></footer>
+
+<script>
+//SIM-START
+// ---------- DATA: 48 teams, final groups after March 2026 playoffs ----------
+const TEAMS = {
+  // Group A
+  MEX:{ar:"المكسيك",en:"Mexico",g:"A",elo:1850,f:"🇲🇽",host:true},
+  RSA:{ar:"جنوب أفريقيا",en:"South Africa",g:"A",elo:1645,f:"🇿🇦"},
+  KOR:{ar:"كوريا الجنوبية",en:"South Korea",g:"A",elo:1775,f:"🇰🇷"},
+  CZE:{ar:"التشيك",en:"Czechia",g:"A",elo:1740,f:"🇨🇿"},
+  // Group B
+  CAN:{ar:"كندا",en:"Canada",g:"B",elo:1785,f:"🇨🇦",host:true},
+  BIH:{ar:"البوسنة والهرسك",en:"Bosnia & Herzegovina",g:"B",elo:1655,f:"🇧🇦"},
+  QAT:{ar:"قطر",en:"Qatar",g:"B",elo:1570,f:"🇶🇦"},
+  SUI:{ar:"سويسرا",en:"Switzerland",g:"B",elo:1845,f:"🇨🇭"},
+  // Group C
+  BRA:{ar:"البرازيل",en:"Brazil",g:"C",elo:2025,f:"🇧🇷"},
+  MAR:{ar:"المغرب",en:"Morocco",g:"C",elo:1855,f:"🇲🇦"},
+  HAI:{ar:"هايتي",en:"Haiti",g:"C",elo:1500,f:"🇭🇹"},
+  SCO:{ar:"اسكتلندا",en:"Scotland",g:"C",elo:1720,f:"🏴󠁧󠁢󠁳󠁣󠁴󠁿"},
+  // Group D
+  USA:{ar:"أمريكا",en:"USA",g:"D",elo:1790,f:"🇺🇸",host:true},
+  PAR:{ar:"باراغواي",en:"Paraguay",g:"D",elo:1760,f:"🇵🇾"},
+  AUS:{ar:"أستراليا",en:"Australia",g:"D",elo:1725,f:"🇦🇺"},
+  TUR:{ar:"تركيا",en:"Türkiye",g:"D",elo:1830,f:"🇹🇷"},
+  // Group E
+  GER:{ar:"ألمانيا",en:"Germany",g:"E",elo:1945,f:"🇩🇪"},
+  CUW:{ar:"كوراساو",en:"Curaçao",g:"E",elo:1555,f:"🇨🇼"},
+  CIV:{ar:"كوت ديفوار",en:"Ivory Coast",g:"E",elo:1740,f:"🇨🇮"},
+  ECU:{ar:"الإكوادور",en:"Ecuador",g:"E",elo:1875,f:"🇪🇨"},
+  // Group F
+  NED:{ar:"هولندا",en:"Netherlands",g:"F",elo:1985,f:"🇳🇱"},
+  JPN:{ar:"اليابان",en:"Japan",g:"F",elo:1875,f:"🇯🇵"},
+  SWE:{ar:"السويد",en:"Sweden",g:"F",elo:1700,f:"🇸🇪"},
+  TUN:{ar:"تونس",en:"Tunisia",g:"F",elo:1690,f:"🇹🇳"},
+  // Group G
+  BEL:{ar:"بلجيكا",en:"Belgium",g:"G",elo:1875,f:"🇧🇪"},
+  EGY:{ar:"مصر",en:"Egypt",g:"G",elo:1700,f:"🇪🇬"},
+  IRN:{ar:"إيران",en:"Iran",g:"G",elo:1760,f:"🇮🇷"},
+  NZL:{ar:"نيوزيلندا",en:"New Zealand",g:"G",elo:1585,f:"🇳🇿"},
+  // Group H
+  ESP:{ar:"إسبانيا",en:"Spain",g:"H",elo:2180,f:"🇪🇸"},
+  CPV:{ar:"الرأس الأخضر",en:"Cape Verde",g:"H",elo:1575,f:"🇨🇻"},
+  KSA:{ar:"السعودية",en:"Saudi Arabia",g:"H",elo:1640,f:"🇸🇦"},
+  URU:{ar:"أوروغواي",en:"Uruguay",g:"H",elo:1915,f:"🇺🇾"},
+  // Group I
+  FRA:{ar:"فرنسا",en:"France",g:"I",elo:2050,f:"🇫🇷"},
+  SEN:{ar:"السنغال",en:"Senegal",g:"I",elo:1800,f:"🇸🇳"},
+  IRQ:{ar:"العراق",en:"Iraq",g:"I",elo:1620,f:"🇮🇶"},
+  NOR:{ar:"النرويج",en:"Norway",g:"I",elo:1850,f:"🇳🇴"},
+  // Group J
+  ARG:{ar:"الأرجنتين",en:"Argentina",g:"J",elo:2145,f:"🇦🇷"},
+  ALG:{ar:"الجزائر",en:"Algeria",g:"J",elo:1710,f:"🇩🇿"},
+  AUT:{ar:"النمسا",en:"Austria",g:"J",elo:1800,f:"🇦🇹"},
+  JOR:{ar:"الأردن",en:"Jordan",g:"J",elo:1610,f:"🇯🇴"},
+  // Group K
+  POR:{ar:"البرتغال",en:"Portugal",g:"K",elo:2010,f:"🇵🇹"},
+  COD:{ar:"الكونغو الديمقراطية",en:"DR Congo",g:"K",elo:1635,f:"🇨🇩"},
+  UZB:{ar:"أوزبكستان",en:"Uzbekistan",g:"K",elo:1665,f:"🇺🇿"},
+  COL:{ar:"كولومبيا",en:"Colombia",g:"K",elo:1930,f:"🇨🇴"},
+  // Group L
+  ENG:{ar:"إنجلترا",en:"England",g:"L",elo:2020,f:"🏴󠁧󠁢󠁥󠁮󠁧󠁿"},
+  CRO:{ar:"كرواتيا",en:"Croatia",g:"L",elo:1880,f:"🇭🇷"},
+  GHA:{ar:"غانا",en:"Ghana",g:"L",elo:1660,f:"🇬🇭"},
+  PAN:{ar:"بنما",en:"Panama",g:"L",elo:1675,f:"🇵🇦"}
+};
+const GROUPS = "ABCDEFGHIJKL".split("");
+const groupTeams = g => Object.keys(TEAMS).filter(k=>TEAMS[k].g===g);
+
+// Round of 32 bracket (official structure). 3rd-place slots list allowed groups.
+const R32 = [
+  {id:"M73",home:["A",2],away:["B",2]},
+  {id:"M74",home:["E",1],away:{third:["A","B","C","D","F"]}},
+  {id:"M75",home:["F",1],away:["C",2]},
+  {id:"M76",home:["C",1],away:["F",2]},
+  {id:"M77",home:["I",1],away:{third:["C","D","F","G","H"]}},
+  {id:"M78",home:["E",2],away:["I",2]},
+  {id:"M79",home:["A",1],away:{third:["C","E","F","H","I"]}},
+  {id:"M80",home:["L",1],away:{third:["E","H","I","J","K"]}},
+  {id:"M81",home:["G",1],away:{third:["A","E","H","I","J"]}},
+  {id:"M82",home:["D",1],away:{third:["B","E","F","I","J"]}},
+  {id:"M83",home:["H",1],away:["J",2]},
+  {id:"M84",home:["K",2],away:["L",2]},
+  {id:"M85",home:["B",1],away:{third:["E","F","G","I","J"]}},
+  {id:"M86",home:["D",2],away:["G",2]},
+  {id:"M87",home:["J",1],away:["H",2]},
+  {id:"M88",home:["K",1],away:{third:["D","E","I","J","L"]}}
+];
+// R16 pairings by R32 match id
+const R16 = [["M74","M77"],["M73","M75"],["M76","M78"],["M79","M80"],
+             ["M83","M84"],["M81","M82"],["M85","M86"],["M87","M88"]];
+// QF: indices into R16 winners
+const QF = [[0,1],[4,5],[2,3],[6,7]];
+const SF = [[0,1],[2,3]];
+
+// ---------- MATH ----------
+function poisson(lambda){
+  const L = Math.exp(-lambda);
+  let k = 0, p = 1;
+  do { k++; p *= Math.random(); } while (p > L);
+  return k - 1;
+}
+function lambdas(a, b){
+  const ha = TEAMS[a].host ? 60 : 0, hb = TEAMS[b].host ? 60 : 0;
+  const dr = (TEAMS[a].elo + ha) - (TEAMS[b].elo + hb);
+  let la = 1.32 * Math.exp(dr/480), lb = 1.32 * Math.exp(-dr/480);
+  return [Math.min(Math.max(la,0.15),4.2), Math.min(Math.max(lb,0.15),4.2)];
+}
+function playGroupMatch(a,b){
+  const [la,lb] = lambdas(a,b);
+  return [poisson(la), poisson(lb)];
+}
+function playKO(a,b){
+  let [la,lb] = lambdas(a,b);
+  let ga = poisson(la), gb = poisson(lb);
+  if (ga !== gb) return ga > gb ? a : b;
+  // extra time: a third of regulation rate
+  ga = poisson(la/3); gb = poisson(lb/3);
+  if (ga !== gb) return ga > gb ? a : b;
+  // penalties: mild elo tilt
+  const dr = TEAMS[a].elo - TEAMS[b].elo;
+  const p = 1/(1+Math.pow(10,-dr/1200));
+  return Math.random() < p ? a : b;
+}
+
+// assign 8 third-placed teams to 8 constrained slots (backtracking)
+function assignThirds(thirds, slots){
+  // thirds: array of group letters (8). slots: array of allowed-group arrays (8)
+  const order = [...Array(8).keys()].sort((x,y)=>slots[x].cnt-slots[y].cnt);
+  const used = new Array(8).fill(false);
+  const assign = new Array(8).fill(null);
+  function bt(i){
+    if (i === 8) return true;
+    const s = order[i];
+    const shuffled = [...Array(8).keys()].sort(()=>Math.random()-0.5);
+    for (const t of shuffled){
+      if (!used[t] && slots[s].allowed.includes(thirds[t])){
+        used[t] = true; assign[s] = thirds[t];
+        if (bt(i+1)) return true;
+        used[t] = false; assign[s] = null;
+      }
+    }
+    return false;
+  }
+  if (bt(0)) return assign;
+  // fallback (shouldn't happen often): ignore constraints
+  const sh = [...thirds].sort(()=>Math.random()-0.5);
+  return sh;
+}
+
+// ---------- TOURNAMENT SIM ----------
+function simulateOnce(stats){
+  const standings = {}; // group -> sorted [team,...]
+  const thirdsInfo = []; // {team, pts, gd, gf, g}
+  for (const g of GROUPS){
+    const ts = groupTeams(g);
+    const rec = {};
+    ts.forEach(t => rec[t] = {pts:0, gd:0, gf:0});
+    for (let i=0;i<4;i++) for (let j=i+1;j<4;j++){
+      const a = ts[i], b = ts[j];
+      const [ga,gb] = playGroupMatch(a,b);
+      rec[a].gf += ga; rec[a].gd += ga-gb;
+      rec[b].gf += gb; rec[b].gd += gb-ga;
+      if (ga>gb) rec[a].pts += 3;
+      else if (gb>ga) rec[b].pts += 3;
+      else { rec[a].pts++; rec[b].pts++; }
+    }
+    const sorted = [...ts].sort((a,b)=>
+      rec[b].pts-rec[a].pts || rec[b].gd-rec[a].gd || rec[b].gf-rec[a].gf || Math.random()-0.5);
+    standings[g] = sorted;
+    sorted.forEach((t,pos)=>{ stats[t].pos[pos]++; });
+    const th = sorted[2];
+    thirdsInfo.push({team:th, g, ...rec[th]});
+  }
+  // best 8 thirds
+  thirdsInfo.sort((a,b)=> b.pts-a.pts || b.gd-a.gd || b.gf-a.gf || Math.random()-0.5);
+  const best8 = thirdsInfo.slice(0,8);
+  const thirdGroups = best8.map(x=>x.g);
+  const thirdTeamByGroup = {};
+  best8.forEach(x=> thirdTeamByGroup[x.g] = x.team);
+
+  // slots needing thirds
+  const thirdSlots = R32.filter(m => m.away.third).map(m => ({allowed:m.away.third, cnt:m.away.third.length}));
+  const assignment = assignThirds(thirdGroups, thirdSlots);
+
+  // build R32 participants
+  const r32winners = {};
+  let ti = 0;
+  const allR32teams = [];
+  for (const m of R32){
+    const home = standings[m.home[0]][m.home[1]-1];
+    let away;
+    if (m.away.third){
+      const gLetter = assignment[ti++];
+      away = thirdTeamByGroup[gLetter];
+    } else {
+      away = standings[m.away[0]][m.away[1]-1];
+    }
+    allR32teams.push(home, away);
+    r32winners[m.id] = playKO(home, away);
+  }
+  allR32teams.forEach(t => stats[t].r32++);
+  Object.values(r32winners).forEach(t => stats[t].r16++);
+
+  // R16
+  const r16w = R16.map(([m1,m2]) => playKO(r32winners[m1], r32winners[m2]));
+  r16w.forEach(t => stats[t].qf++);
+  // QF
+  const qfw = QF.map(([i,j]) => playKO(r16w[i], r16w[j]));
+  qfw.forEach(t => stats[t].sf++);
+  // SF
+  const sfw = SF.map(([i,j]) => playKO(qfw[i], qfw[j]));
+  sfw.forEach(t => stats[t].fin++);
+  // Final
+  const champ = playKO(sfw[0], sfw[1]);
+  stats[champ].champ++;
+  return champ;
+}
+
+function freshStats(){
+  const s = {};
+  for (const t of Object.keys(TEAMS)){
+    s[t] = {pos:[0,0,0,0], r32:0, r16:0, qf:0, sf:0, fin:0, champ:0};
+  }
+  return s;
+}
+//SIM-END
+
+// ---------- UI ----------
+// ---------- I18N ----------
+let LANG = "ar";
+let lastStats = null, lastN = 0;
+const I18N = {
+ar:{
+ title:'نموذج توقع <span class="gold">كأس العالم 2026</span>',
+ sub:"محاكاة إحصائية كاملة للبطولة (48 منتخبًا، 104 مباريات): أهداف كل مباراة من توزيع بواسون بمعاملات مشتقة من تقييمات Elo، مع أفضلية أرض للمستضيفين، وتكرار البطولة آلاف المرات لاستخراج احتمالات كل دور.",
+ iters:"عدد المحاكاة:", run:"شغّل المحاكاة 🎲", rerun:"أعد المحاكاة 🎲", running:"جارٍ المحاكاة…",
+ langBtn:"English",
+ hCont:"🏆 أبرز المرشحين للقب", nCont:"احتمالية الفوز باللقب — أعلى 12 منتخبًا",
+ hKsa:"🇸🇦 رحلة الأخضر", nKsa:"مجموعة H: إسبانيا، أوروغواي، السعودية، الرأس الأخضر — احتمالات الصقور في كل دور",
+ ksaCard:"المنتخب السعودي", ksaWait:"شغّل المحاكاة لعرض النتائج…", opts:["2,000 (سريع)","10,000 (موصى به)","20,000 (دقة أعلى)"],
+ ksaSub:(n,p)=>`من واقع ${n.toLocaleString("ar-SA")} محاكاة — احتمال تجاوز المجموعة: ${p}`,
+ hGrp:"المجموعات: احتمالات التأهل",
+ nGrp:"النسبة = احتمال بلوغ دور الـ32 (المركز الأول أو الثاني، أو ضمن أفضل 8 منتخبات تحتل المركز الثالث)",
+ grpWord:"المجموعة", grpHint:"احتمال التأهل لدور الـ32", topWord:"صدارة",
+ hTbl:"جدول الأدوار الكامل", nTbl:"احتمالية بلوغ كل دور لكل المنتخبات الـ48 — مرتبة حسب احتمالية اللقب",
+ th:["المنتخب","المجموعة","دور الـ32","دور الـ16","ربع النهائي","نصف النهائي","النهائي","اللقب 🏆"],
+ stages:["دور الـ32","دور الـ16","ربع النهائي","نصف النهائي","النهائي","اللقب 🏆"],
+ hMeth:"المنهجية",
+ meth:`<p><strong>1) قوة المنتخبات:</strong> تقييم Elo تقديري لكل منتخب (محدَّث حتى يونيو 2026 بناءً على نتائج التصفيات والوديات). أفضلية أرض <code>+60</code> نقطة Elo للمستضيفين (أمريكا، كندا، المكسيك).</p>
+<p><strong>2) محاكاة المباراة:</strong> فارق التقييم <code>dr = elo_A − elo_B</code> يُترجم لمعدل أهداف متوقع لكل فريق: <code>λ_A = 1.32 × e^(dr/480)</code> ثم تُسحب الأهداف من توزيع بواسون <code>Goals ~ Poisson(λ)</code>. في الأدوار الإقصائية: تعادل ← وقت إضافي (بواسون بثلث المعدل) ← ركلات ترجيح مرجّحة بفارق Elo.</p>
+<p><strong>3) هيكل البطولة:</strong> 12 مجموعة × 4، يتأهل الأول والثاني + أفضل 8 ثوالث (ترتيب الثوالث: نقاط ← فارق أهداف ← أهداف مسجلة). توزيع أصحاب المركز الثالث على شجرة دور الـ32 وفق قيود الجدول الرسمي (بتقريب عشوائي عند تعدد الحلول الصالحة).</p>
+<p><strong>4) مونت كارلو:</strong> تُعاد محاكاة البطولة كاملة آلاف المرات، والاحتمال = نسبة مرات بلوغ المنتخب للدور. هامش الخطأ عند 10,000 محاكاة ≈ ±1%.</p>
+<p style="margin-top:8px"><strong>تنبيه:</strong> النموذج لا يأخذ بالاعتبار الإصابات، جاهزية اللاعبين، أو عوامل تكتيكية — تقييم Elo يلخّص القوة التاريخية الحديثة فقط.</p>`,
+ footer:"نموذج إحصائي تعليمي — بواسون × مونت كارلو × Elo • كأس العالم 2026 (أمريكا، كندا، المكسيك) • د. خالد القحطاني"
+},
+en:{
+ title:'<span class="gold">World Cup 2026</span> Prediction Model',
+ sub:"A full statistical simulation of the tournament (48 teams, 104 matches): match goals drawn from a Poisson distribution with rates derived from Elo ratings, home advantage for the hosts, and thousands of full-tournament replays to extract stage-by-stage probabilities.",
+ iters:"Simulations:", run:"Run simulation 🎲", rerun:"Run again 🎲", running:"Simulating…",
+ langBtn:"عربي",
+ hCont:"🏆 Title favorites", nCont:"Probability of winning the title — top 12 teams",
+ hKsa:"🇸🇦 The Green Falcons' road", nKsa:"Group H: Spain, Uruguay, Saudi Arabia, Cape Verde — Saudi probabilities at every stage",
+ ksaCard:"Saudi Arabia", ksaWait:"Run the simulation to see results…", opts:["2,000 (fast)","10,000 (recommended)","20,000 (higher precision)"],
+ ksaSub:(n,p)=>`Based on ${n.toLocaleString("en-US")} simulations — probability of advancing from the group: ${p}`,
+ hGrp:"Groups: qualification probabilities",
+ nGrp:"Value = probability of reaching the Round of 32 (top two, or among the 8 best third-placed teams)",
+ grpWord:"Group", grpHint:"Prob. of reaching Round of 32", topWord:"1st",
+ hTbl:"Full stage-by-stage table", nTbl:"Probability of reaching each stage for all 48 teams — sorted by title probability",
+ th:["Team","Group","Round of 32","Round of 16","Quarterfinal","Semifinal","Final","Title 🏆"],
+ stages:["Round of 32","Round of 16","Quarterfinal","Semifinal","Final","Title 🏆"],
+ hMeth:"Methodology",
+ meth:`<p><strong>1) Team strength:</strong> approximate Elo rating per team (updated through June 2026 from qualifiers and friendlies). Home advantage of <code>+60</code> Elo points for the hosts (USA, Canada, Mexico).</p>
+<p><strong>2) Match simulation:</strong> the rating gap <code>dr = elo_A − elo_B</code> maps to each team's expected goal rate <code>λ_A = 1.32 × e^(dr/480)</code>, with goals drawn from <code>Goals ~ Poisson(λ)</code>. Knockouts: draw → extra time (Poisson at one-third rate) → penalties tilted by the Elo gap.</p>
+<p><strong>3) Tournament structure:</strong> 12 groups of 4; top two qualify plus the 8 best third-placed teams (ranked by points → goal difference → goals scored). Third-placed teams are allocated to the Round-of-32 bracket under the official table constraints (random tie-breaking among valid assignments).</p>
+<p><strong>4) Monte Carlo:</strong> the full tournament is replayed thousands of times; each probability = the share of runs in which a team reaches that stage. Margin of error at 10,000 runs ≈ ±1%.</p>
+<p style="margin-top:8px"><strong>Note:</strong> the model ignores injuries, squad readiness and tactics — Elo summarizes recent historical strength only.</p>`,
+ footer:"Educational statistical model — Poisson × Monte Carlo × Elo • World Cup 2026 (USA, Canada, Mexico) • Dr. Khaled Alqahtani"
+}
+};
+const tName = t => LANG === "en" ? (TEAMS[t].en || TEAMS[t].ar) : TEAMS[t].ar;
+
+function applyLang(){
+  const L = I18N[LANG];
+  document.documentElement.lang = LANG;
+  document.documentElement.dir = LANG === "ar" ? "rtl" : "ltr";
+  document.getElementById("t-title").innerHTML = L.title;
+  document.getElementById("t-sub").textContent = L.sub;
+  document.getElementById("t-iters").textContent = L.iters;
+  [...document.getElementById("iters").options].forEach((o,i)=> o.textContent = L.opts[i]);
+  document.getElementById("langBtn").textContent = L.langBtn;
+  const btn = document.getElementById("runBtn");
+  if (!running) btn.textContent = lastStats ? L.rerun : L.run;
+  document.getElementById("t-h-cont").textContent = L.hCont;
+  document.getElementById("t-n-cont").textContent = L.nCont;
+  document.getElementById("t-h-ksa").textContent = L.hKsa;
+  document.getElementById("t-n-ksa").textContent = L.nKsa;
+  document.getElementById("t-ksa-card").textContent = L.ksaCard;
+  if (!lastStats) document.getElementById("ksaSub").textContent = L.ksaWait;
+  document.getElementById("t-h-grp").textContent = L.hGrp;
+  document.getElementById("t-n-grp").textContent = L.nGrp;
+  document.getElementById("t-h-tbl").textContent = L.hTbl;
+  document.getElementById("t-n-tbl").textContent = L.nTbl;
+  L.th.forEach((h,i)=> document.getElementById("th"+i).textContent = h);
+  document.getElementById("t-h-meth").textContent = L.hMeth;
+  document.getElementById("methodBody").innerHTML = L.meth;
+  document.getElementById("t-footer").textContent = L.footer;
+  if (lastStats) render(lastStats, lastN);
+}
+function toggleLang(){
+  LANG = LANG === "ar" ? "en" : "ar";
+  applyLang();
+}
+
+const fmt = (x,n) => (100*x/n).toFixed(1) + "%";
+const fmtD = (x,n) => (100*x/n);
+
+function heatColor(p){ // p in 0..100
+  if (p >= 60) return "rgba(43,182,115,.22)";
+  if (p >= 25) return "rgba(232,184,75,.18)";
+  if (p >= 8)  return "rgba(232,184,75,.08)";
+  return "transparent";
+}
+
+function render(stats, N){
+  // contenders
+  const ranked = Object.keys(TEAMS).sort((a,b)=>stats[b].champ-stats[a].champ);
+  const cWrap = document.getElementById("contenders");
+  cWrap.innerHTML = "";
+  const maxC = stats[ranked[0]].champ || 1;
+  ranked.slice(0,12).forEach((t,i)=>{
+    const d = TEAMS[t];
+    const row = document.createElement("div");
+    row.className = "contender" + (t==="KSA" ? " is-ksa" : "");
+    row.innerHTML = `
+      <div class="flag">${d.f}</div>
+      <div class="name">${i+1}. ${tName(t)}</div>
+      <div class="track"><div class="fill" data-w="${(100*stats[t].champ/maxC).toFixed(1)}"></div></div>
+      <div class="pct">${fmt(stats[t].champ,N)}</div>`;
+    cWrap.appendChild(row);
+  });
+  requestAnimationFrame(()=> {
+    cWrap.querySelectorAll(".fill").forEach(el => el.style.width = el.dataset.w + "%");
+  });
+
+  // KSA card
+  const k = stats.KSA;
+  document.getElementById("ksaSub").textContent = I18N[LANG].ksaSub(N, fmt(k.r32, N));
+  const vals = [k.r32, k.r16, k.qf, k.sf, k.fin, k.champ];
+  const stages = I18N[LANG].stages.map((l,i)=>[l, vals[i]]);
+  document.getElementById("ksaStages").innerHTML = stages.map(([l,v],i)=>
+    `<div class="stage ${i===0?'hot':''}"><div class="lbl">${l}</div><div class="val">${fmt(v,N)}</div></div>`
+  ).join("");
+
+  // groups
+  const gWrap = document.getElementById("groups");
+  gWrap.innerHTML = "";
+  for (const g of GROUPS){
+    const ts = groupTeams(g).sort((a,b)=>stats[b].r32-stats[a].r32);
+    const card = document.createElement("div");
+    card.className = "gcard";
+    let rows = "";
+    for (const t of ts){
+      const q = fmtD(stats[t].r32, N);
+      const win = fmtD(stats[t].pos[0], N).toFixed(0);
+      const TW = I18N[LANG].topWord;
+      const cls = q >= 65 ? "q-high" : q >= 30 ? "q-mid" : "q-low";
+      rows += `<div class="trow ${cls} ${t==="KSA"?"is-ksa":""}">
+        <div class="tflag">${TEAMS[t].f}</div>
+        <div class="tname">${tName(t)}</div>
+        <div class="twin">${TW} ${win}%</div>
+        <div class="tq">${q.toFixed(1)}%</div>
+      </div>`;
+    }
+    card.innerHTML = `<div class="ghead"><span>${I18N[LANG].grpWord} <span class="gletter">${g}</span></span><span class="ghint">${I18N[LANG].grpHint}</span></div>${rows}`;
+    gWrap.appendChild(card);
+  }
+
+  // full table
+  const body = document.getElementById("tblBody");
+  body.innerHTML = ranked.map(t=>{
+    const s = stats[t], d = TEAMS[t];
+    const cell = v => {
+      const p = fmtD(v,N);
+      return `<td><span class="heat" style="background:${heatColor(p)}">${p.toFixed(1)}%</span></td>`;
+    };
+    return `<tr class="${t==="KSA"?"is-ksa":""}">
+      <td>${d.f} ${tName(t)}</td><td>${d.g}</td>
+      ${cell(s.r32)}${cell(s.r16)}${cell(s.qf)}${cell(s.sf)}${cell(s.fin)}
+      <td class="champ">${fmt(s.champ,N)}</td>
+    </tr>`;
+  }).join("");
+}
+
+let running = false;
+function runSim(){
+  if (running) return;
+  running = true;
+  const N = parseInt(document.getElementById("iters").value, 10);
+  const btn = document.getElementById("runBtn");
+  const prog = document.getElementById("prog"), bar = document.getElementById("progBar");
+  btn.disabled = true; btn.textContent = I18N[LANG].running;
+  prog.style.visibility = "visible"; bar.style.width = "0%";
+  const stats = freshStats();
+  let done = 0;
+  const CHUNK = 250;
+  function step(){
+    const end = Math.min(done + CHUNK, N);
+    for (; done < end; done++) simulateOnce(stats);
+    bar.style.width = (100*done/N).toFixed(1) + "%";
+    if (done < N){
+      setTimeout(step, 0);
+    } else {
+      lastStats = stats; lastN = N;
+      render(stats, N);
+      btn.disabled = false; btn.textContent = I18N[LANG].rerun;
+      prog.style.visibility = "hidden";
+      running = false;
+    }
+  }
+  step();
+}
+
+// auto-run on load
+if (typeof document !== "undefined"){
+  window.addEventListener("load", ()=>{ applyLang(); setTimeout(runSim, 350); });
+}
+</script>
+</body>
+</html>
