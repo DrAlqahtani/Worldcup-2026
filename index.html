@@ -172,6 +172,53 @@ tbody tr.is-ksa{background:rgba(43,182,115,.1)}
 td.champ{font-family:var(--display);font-size:16px;color:var(--gold)}
 tr.is-ksa td.champ{color:var(--saudi)}
 .heat{display:inline-block;min-width:46px;padding:1px 6px;border-radius:4px}
+
+/* fixtures */
+.fix-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:16px}
+.fxcard{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.fxcard .ghead{font-family:var(--display);font-size:17px;padding:9px 16px;background:var(--panel2);border-bottom:1px solid var(--line)}
+.fxcard .ghead .gletter{color:var(--gold)}
+.fxrow{padding:10px 14px;border-bottom:1px solid rgba(35,73,58,.35)}
+.fxrow:last-child{border-bottom:none}
+.fxmain{display:grid;grid-template-columns:1fr 96px 1fr;align-items:center;gap:8px}
+.fxteam{display:flex;align-items:center;gap:6px;font-size:13.5px;font-weight:500;min-width:0}
+.fxteam .fl{font-size:18px}
+.fxteam span.nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fxteam.away{justify-content:flex-end}
+.fxscore{display:flex;align-items:center;justify-content:center;gap:5px}
+.fxscore input{
+  width:36px;height:34px;text-align:center;font-family:var(--display);font-size:18px;
+  background:var(--panel2);color:var(--chalk);border:1px solid var(--line);border-radius:7px;
+}
+.fxscore input.played{border-color:var(--gold);color:var(--gold)}
+.fxmeta{display:flex;justify-content:space-between;margin-top:6px;font-size:11.5px;color:var(--muted)}
+.fxmeta .likely{color:var(--gold)}
+.fixbar{display:flex;height:5px;border-radius:3px;overflow:hidden;margin-top:6px;background:var(--panel2)}
+.fixbar i{display:block;height:100%}
+.fixbar .w{background:var(--saudi)}
+.fixbar .d{background:#6B7F74}
+.fixbar .l{background:var(--danger)}
+.fix-actions{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0 6px}
+.fix-actions button{
+  font-family:var(--body);font-size:14px;padding:9px 16px;border-radius:8px;cursor:pointer;
+  background:var(--gold);color:#1A1407;font-weight:700;border:none;
+}
+.fix-actions button.ghost{background:var(--panel);color:var(--chalk);border:1px solid var(--line)}
+.fix-note{font-size:12.5px;color:var(--muted);margin-bottom:14px}
+.fix-note b{color:var(--gold);font-weight:600}
+
+.fxvs{text-align:center;color:var(--muted);font-size:12px}
+.fxfinal{text-align:center;font-family:var(--display);font-size:22px;color:var(--gold)}
+.fxrow.is-played{background:rgba(232,184,75,.05)}
+.delta{font-size:11px;font-weight:600;margin-inline-start:6px;font-family:var(--body)}
+.delta.up{color:var(--saudi)} .delta.down{color:var(--danger)}
+.insights{margin-top:26px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px 22px}
+.insights h3{font-family:var(--display);font-weight:400;font-size:20px;color:var(--gold)}
+.ins-sub{color:var(--muted);font-size:12.5px;margin-bottom:12px}
+.ins-col-h{font-size:13px;font-weight:600;margin:10px 0 4px}
+.ins-col-h.up{color:var(--saudi)} .ins-col-h.down{color:var(--danger)}
+.ins-row{display:flex;justify-content:space-between;font-size:14px;padding:5px 0;border-bottom:1px dashed rgba(35,73,58,.5)}
+.ins-row.up span:last-child{color:var(--saudi)} .ins-row.down span:last-child{color:var(--danger)}
 /* methodology */
 .method{
   background:var(--panel);border:1px solid var(--line);border-radius:12px;
@@ -222,6 +269,7 @@ footer{
   <h2 id="t-h-cont"></h2>
   <div class="sec-note" id="t-n-cont"></div>
   <div id="contenders"></div>
+  <div id="insights" class="insights" style="display:none"></div>
 </section>
 
 <section id="sec-ksa">
@@ -232,6 +280,13 @@ footer{
     <div class="ksa-sub" id="ksaSub"></div>
     <div class="stage-row" id="ksaStages"></div>
   </div>
+</section>
+
+<section id="sec-fixtures">
+  <h2 id="t-h-fix"></h2>
+  <div class="sec-note" id="t-n-fix"></div>
+  <div class="fix-note" id="liveStatus"></div>
+  <div class="fix-grid" id="fixtures"></div>
 </section>
 
 <section id="sec-groups">
@@ -263,7 +318,9 @@ footer{
     <p><strong>2) محاكاة المباراة:</strong> فارق التقييم <code>dr = elo_A − elo_B</code> يُترجم لمعدل أهداف متوقع لكل فريق: <code>λ_A = 1.32 × e^(dr/480)</code> ثم تُسحب الأهداف من توزيع بواسون <code>Goals ~ Poisson(λ)</code>. في الأدوار الإقصائية: تعادل ← وقت إضافي (بواسون بثلث المعدل) ← ركلات ترجيح مرجّحة بفارق Elo.</p>
     <p><strong>3) هيكل البطولة:</strong> 12 مجموعة × 4، يتأهل الأول والثاني + أفضل 8 ثوالث (ترتيب الثوالث: نقاط ← فارق أهداف ← أهداف مسجلة). توزيع أصحاب المركز الثالث على شجرة دور الـ32 وفق قيود الجدول الرسمي (بتقريب عشوائي عند تعدد الحلول الصالحة).</p>
     <p><strong>4) مونت كارلو:</strong> تُعاد محاكاة البطولة كاملة آلاف المرات، والاحتمال = نسبة مرات بلوغ المنتخب للدور. هامش الخطأ عند 10,000 محاكاة ≈ ±1%.</p>
-    <p style="margin-top:8px"><strong>تنبيه:</strong> النموذج لا يأخذ بالاعتبار الإصابات، جاهزية اللاعبين، أو عوامل تكتيكية — تقييم Elo يلخّص القوة التاريخية الحديثة فقط.</p>
+    <p><strong>5) النتائج الحية والمحاكاة الشرطية:</strong> تُجلب نتائج المباريات المنتهية تلقائيًا من قاعدة بيانات openfootball المفتوحة عند كل فتح للصفحة (تتحدث يوميًا). النتائج الرسمية <code>تُثبَّت</code> في المحاكاة، ويُعاد حساب احتمالات ما تبقى من البطولة شرطيًا بناءً عليها.</p>
+<p><strong>6) خط الأساس والتغيرات:</strong> احتمالات ما قبل البطولة محسوبة مسبقًا بـ<code>50,000</code> محاكاة ومجمّدة بتاريخ 11 يونيو 2026. المؤشرات (▲▼) وقسم "أبرز التغيرات" يقيسان الفرق بالنقاط المئوية بين الاحتمالات الحالية وخط الأساس — أي أنها تعكس أثر النتائج الفعلية فقط.</p>
+<p style="margin-top:8px"><strong>تنبيه:</strong> النموذج لا يأخذ بالاعتبار الإصابات، جاهزية اللاعبين، أو عوامل تكتيكية — تقييم Elo يلخّص القوة التاريخية الحديثة فقط. فروقات أقل من ±0.3 نقطة تقع ضمن هامش ضوضاء مونت كارلو ولا تُعرض.</p>
   </div>
 </section>
 
@@ -379,6 +436,8 @@ function lambdas(a, b){
   return [Math.min(Math.max(la,0.15),4.2), Math.min(Math.max(lb,0.15),4.2)];
 }
 function playGroupMatch(a,b){
+  const fx = FIXED[a+"_"+b];
+  if (fx) return [fx[0], fx[1]];
   const [la,lb] = lambdas(a,b);
   return [poisson(la), poisson(lb)];
 }
@@ -498,6 +557,170 @@ function freshStats(){
 }
 //SIM-END
 
+
+// ---------- FIXTURES: analytic match probabilities + fixed results ----------
+// Pre-tournament baseline (50,000 simulations, frozen June 11, 2026)
+const BASELINE = {"MEX":{"r32":94.12,"r16":63.84,"qf":29.76,"sf":12.5,"fin":3.88,"champ":1.13},"RSA":{"r32":38.28,"r16":10.91,"qf":2.18,"sf":0.2,"fin":0.02,"champ":0},"KOR":{"r32":75,"r16":35.53,"qf":11.34,"sf":2.53,"fin":0.47,"champ":0.07},"CZE":{"r32":66.47,"r16":27.94,"qf":7.92,"sf":1.4,"fin":0.2,"champ":0.03},"CAN":{"r32":92.69,"r16":55.76,"qf":27.39,"sf":6.63,"fin":1.78,"champ":0.39},"BIH":{"r32":55.99,"r16":16.63,"qf":3.78,"sf":0.37,"fin":0.03,"champ":0},"QAT":{"r32":29.92,"r16":5.75,"qf":0.87,"sf":0.05,"fin":0,"champ":0},"SUI":{"r32":92.78,"r16":56.81,"qf":28.12,"sf":6.93,"fin":1.88,"champ":0.4},"BRA":{"r32":99.43,"r16":70.4,"qf":49.86,"sf":31.1,"fin":14.44,"champ":6.36},"MAR":{"r32":91.95,"r16":39.75,"qf":19.83,"sf":7.29,"fin":1.76,"champ":0.39},"HAI":{"r32":10.06,"r16":0.72,"qf":0.06,"sf":0,"fin":0,"champ":0},"SCO":{"r32":67.23,"r16":17.47,"qf":4.83,"sf":1.01,"fin":0.17,"champ":0.02},"USA":{"r32":82.94,"r16":48.59,"qf":25.9,"sf":5.49,"fin":1.66,"champ":0.41},"PAR":{"r32":63.03,"r16":26.32,"qf":10.23,"sf":1.61,"fin":0.36,"champ":0.06},"AUS":{"r32":52.52,"r16":19.31,"qf":6.71,"sf":0.88,"fin":0.14,"champ":0.01},"TUR":{"r32":79.4,"r16":43.67,"qf":21.82,"sf":4.39,"fin":1.19,"champ":0.25},"GER":{"r32":96.91,"r16":67.57,"qf":32.62,"sf":16.91,"fin":5.85,"champ":2},"CUW":{"r32":15.9,"r16":2.32,"qf":0.28,"sf":0.02,"fin":0,"champ":0},"CIV":{"r32":68.02,"r16":24.27,"qf":6.59,"sf":1.18,"fin":0.19,"champ":0.04},"ECU":{"r32":92.17,"r16":53.1,"qf":21.34,"sf":8.56,"fin":2.36,"champ":0.63},"NED":{"r32":96.76,"r16":61.3,"qf":43.88,"sf":23.66,"fin":9.14,"champ":3.63},"JPN":{"r32":86.71,"r16":38.01,"qf":20.23,"sf":7.8,"fin":2.07,"champ":0.5},"SWE":{"r32":43.74,"r16":10.11,"qf":2.79,"sf":0.44,"fin":0.03,"champ":0},"TUN":{"r32":41.55,"r16":9.04,"qf":2.49,"sf":0.37,"fin":0.05,"champ":0},"BEL":{"r32":94.78,"r16":60.95,"qf":36.83,"sf":8.33,"fin":3.09,"champ":0.83},"EGY":{"r32":66.75,"r16":23.07,"qf":8.02,"sf":0.76,"fin":0.1,"champ":0},"IRN":{"r32":80.2,"r16":35.14,"qf":15.42,"sf":2.02,"fin":0.41,"champ":0.04},"NZL":{"r32":32.29,"r16":6.36,"qf":1.24,"sf":0.06,"fin":0,"champ":0},"ESP":{"r32":99.94,"r16":87.77,"qf":72.1,"sf":65.12,"fin":51.51,"champ":35.74},"CPV":{"r32":17.85,"r16":1.73,"qf":0.22,"sf":0.02,"fin":0,"champ":0},"KSA":{"r32":32.12,"r16":4.69,"qf":1.02,"sf":0.11,"fin":0.02,"champ":0},"URU":{"r32":94.05,"r16":30.18,"qf":14.48,"sf":8.43,"fin":3.46,"champ":1},"FRA":{"r32":98.53,"r16":82.07,"qf":58.86,"sf":40.43,"fin":18.97,"champ":9.5},"SEN":{"r32":70.71,"r16":31.23,"qf":11.14,"sf":3.02,"fin":0.61,"champ":0.09},"IRQ":{"r32":19.3,"r16":4,"qf":0.69,"sf":0.06,"fin":0,"champ":0},"NOR":{"r32":81.37,"r16":42.61,"qf":17.73,"sf":6.35,"fin":1.56,"champ":0.32},"ARG":{"r32":99.86,"r16":76.84,"qf":58.99,"sf":52.36,"fin":38.88,"champ":22.93},"ALG":{"r32":53.38,"r16":8.99,"qf":2.77,"sf":0.39,"fin":0.07,"champ":0.01},"AUT":{"r32":77.41,"r16":15.15,"qf":5.97,"sf":1.8,"fin":0.49,"champ":0.09},"JOR":{"r32":24.35,"r16":2.77,"qf":0.59,"sf":0.04,"fin":0,"champ":0},"POR":{"r32":98.26,"r16":74.82,"qf":28.18,"sf":20.85,"fin":11.5,"champ":4.87},"COD":{"r32":29.39,"r16":4.43,"qf":0.65,"sf":0.09,"fin":0,"champ":0},"UZB":{"r32":38.33,"r16":7.09,"qf":1.15,"sf":0.17,"fin":0.02,"champ":0},"COL":{"r32":94.35,"r16":59.4,"qf":17.03,"sf":10.68,"fin":4.7,"champ":1.45},"ENG":{"r32":98.49,"r16":76.73,"qf":49.73,"sf":30.28,"fin":14.64,"champ":6.23},"CRO":{"r32":89.26,"r16":45.55,"qf":15.09,"sf":7.01,"fin":2.26,"champ":0.58},"GHA":{"r32":35.52,"r16":5.92,"qf":0.5,"sf":0.1,"fin":0.02,"champ":0},"PAN":{"r32":39.96,"r16":7.35,"qf":0.76,"sf":0.21,"fin":0.03,"champ":0.01}};
+// Snapshots archive: after each round, append {label_ar,label_en,probs} via commit
+const SNAPSHOTS = [];
+// Live results source (openfootball, public domain, updated daily, CORS-enabled)
+const RESULTS_URL = "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.json";
+// Manual fallback: ["HOME","AWAY",hg,ag] — used if the feed is unreachable
+const OFFICIAL_RESULTS = [];
+let FIXED = {};
+let LIVE_INFO = {ok:false, count:0, time:null};
+
+const NAME_ALIAS = {
+ "czech republic":"CZE","turkey":"TUR","türkiye":"TUR","ivory coast":"CIV","côte d'ivoire":"CIV","cote d'ivoire":"CIV",
+ "south korea":"KOR","korea republic":"KOR","united states":"USA","usa":"USA",
+ "bosnia & herzegovina":"BIH","bosnia and herzegovina":"BIH","bosnia-herzegovina":"BIH",
+ "dr congo":"COD","congo dr":"COD","democratic republic of the congo":"COD",
+ "cape verde":"CPV","cabo verde":"CPV","saudi arabia":"KSA","south africa":"RSA",
+ "netherlands":"NED","germany":"GER","switzerland":"SUI","new zealand":"NZL"
+};
+function resolveTeam(obj){
+  if (!obj) return null;
+  const code = (obj.code || "").toUpperCase();
+  if (TEAMS[code]) return code;
+  const nm = (obj.name || obj || "").toString().trim().toLowerCase();
+  if (NAME_ALIAS[nm]) return NAME_ALIAS[nm];
+  for (const k of Object.keys(TEAMS)){
+    if ((TEAMS[k].en||"").toLowerCase() === nm) return k;
+  }
+  return null;
+}
+function fixKey(a,b){ return a+"_"+b; }
+function applyOfficialFallback(){
+  for (const r of OFFICIAL_RESULTS) FIXED[fixKey(r[0],r[1])] = [r[2],r[3]];
+}
+async function loadLiveResults(){
+  try{
+    const res = await fetch(RESULTS_URL, {cache:"no-store"});
+    if (!res.ok) throw new Error("HTTP "+res.status);
+    const data = await res.json();
+    const matches = data.matches || data.rounds?.flatMap(r=>r.matches) || [];
+    let cnt = 0;
+    for (const m of matches){
+      const sc1 = m.score1 ?? m.score?.ft?.[0] ?? null;
+      const sc2 = m.score2 ?? m.score?.ft?.[1] ?? null;
+      if (sc1 === null || sc2 === null) continue;
+      if (!m.group) continue; // group stage only; knockouts stay simulated
+      const a = resolveTeam(m.team1), b = resolveTeam(m.team2);
+      if (!a || !b || TEAMS[a].g !== TEAMS[b].g) continue;
+      // store in canonical fixture order (as generated by allFixtures)
+      const ts = groupTeams(TEAMS[a].g);
+      if (ts.indexOf(a) < ts.indexOf(b)) FIXED[fixKey(a,b)] = [sc1, sc2];
+      else FIXED[fixKey(b,a)] = [sc2, sc1];
+      cnt++;
+    }
+    LIVE_INFO = {ok:true, count:cnt, time:new Date()};
+  }catch(e){
+    applyOfficialFallback();
+    LIVE_INFO = {ok:false, count:Object.keys(FIXED).length, time:null};
+  }
+  updateLiveStatus();
+}
+function updateLiveStatus(){
+  const el = document.getElementById("liveStatus");
+  const L = I18N[LANG];
+  if (LIVE_INFO.ok){
+    const t = LIVE_INFO.time.toLocaleTimeString(LANG==="ar"?"ar-SA":"en-US",{hour:"2-digit",minute:"2-digit"});
+    el.innerHTML = `<span style="color:var(--saudi)">●</span> ${L.liveOk(LIVE_INFO.count, t)}`;
+  } else {
+    el.innerHTML = `<span style="color:var(--gold)">●</span> ${L.liveOff}`;
+  }
+}
+function allFixtures(g){
+  const ts = groupTeams(g), fx = [];
+  for (let i=0;i<4;i++) for (let j=i+1;j<4;j++) fx.push([ts[i], ts[j]]);
+  return fx;
+}
+function poisPmf(l,k){ let p=Math.exp(-l); for(let i=1;i<=k;i++) p*=l/i; return p; }
+function matchProbs(a,b){
+  const [la,lb] = lambdas(a,b);
+  let pw=0,pd=0,pl=0,best=[1,0],bp=0;
+  for (let ga=0; ga<=8; ga++){
+    const pa = poisPmf(la,ga);
+    for (let gb=0; gb<=8; gb++){
+      const p = pa * poisPmf(lb,gb);
+      if (ga>gb) pw+=p; else if (ga===gb) pd+=p; else pl+=p;
+      if (p>bp){ bp=p; best=[ga,gb]; }
+    }
+  }
+  return {pw,pd,pl,best};
+}
+function renderFixtures(){
+  const wrap = document.getElementById("fixtures");
+  wrap.innerHTML = "";
+  const L = I18N[LANG];
+  for (const g of GROUPS){
+    const card = document.createElement("div");
+    card.className = "fxcard";
+    let rows = "";
+    for (const [a,b] of allFixtures(g)){
+      const fx = FIXED[fixKey(a,b)];
+      const mp = matchProbs(a,b);
+      const center = fx
+        ? `<div class="fxfinal">${fx[0]} – ${fx[1]}</div>`
+        : `<div class="fxvs">${L.vs}</div>`;
+      const meta = fx
+        ? `<div class="fxmeta"><span class="likely" style="color:var(--saudi)">${L.played}</span><span></span></div>`
+        : `<div class="fixbar">
+             <i class="w" style="width:${(100*mp.pw).toFixed(1)}%"></i>
+             <i class="d" style="width:${(100*mp.pd).toFixed(1)}%"></i>
+             <i class="l" style="width:${(100*mp.pl).toFixed(1)}%"></i>
+           </div>
+           <div class="fxmeta">
+             <span>${(100*mp.pw).toFixed(0)}% / ${(100*mp.pd).toFixed(0)}% / ${(100*mp.pl).toFixed(0)}%</span>
+             <span class="likely">${L.likely}: ${mp.best[0]}–${mp.best[1]}</span>
+           </div>`;
+      rows += `<div class="fxrow ${fx?'is-played':''}">
+        <div class="fxmain">
+          <div class="fxteam"><span class="fl">${TEAMS[a].f}</span><span class="nm">${tName(a)}</span></div>
+          ${center}
+          <div class="fxteam away"><span class="nm">${tName(b)}</span><span class="fl">${TEAMS[b].f}</span></div>
+        </div>
+        ${meta}
+      </div>`;
+    }
+    card.innerHTML = `<div class="ghead">${L.grpWord} <span class="gletter">${g}</span></div>${rows}`;
+    wrap.appendChild(card);
+  }
+}
+// ---------- DELTAS & INSIGHTS vs BASELINE ----------
+function deltaBadge(cur, base){
+  const d = cur - base;
+  if (Math.abs(d) < 0.3) return "";
+  const up = d > 0;
+  return `<span class="delta ${up?'up':'down'}">${up?'▲':'▼'} ${Math.abs(d).toFixed(1)}</span>`;
+}
+function renderInsights(stats, N){
+  const box = document.getElementById("insights");
+  const hasResults = Object.keys(FIXED).length > 0;
+  if (!hasResults){ box.style.display = "none"; return; }
+  const L = I18N[LANG];
+  const movers = Object.keys(TEAMS).map(t=>{
+    const dChamp = (100*stats[t].champ/N) - BASELINE[t].champ;
+    const dR32   = (100*stats[t].r32/N)   - BASELINE[t].r32;
+    const mag = Math.max(Math.abs(dChamp)*3, Math.abs(dR32)); // weight title moves
+    return {t, dChamp, dR32, mag, dir: (dChamp*3 + dR32) >= 0 ? 1 : -1};
+  }).filter(m=>m.mag >= 1);
+  const ups = movers.filter(m=>m.dir>0).sort((a,b)=>b.mag-a.mag).slice(0,3);
+  const downs = movers.filter(m=>m.dir<0).sort((a,b)=>b.mag-a.mag).slice(0,3);
+  if (!ups.length && !downs.length){ box.style.display="none"; return; }
+  const row = m=>{
+    const bits = [];
+    if (Math.abs(m.dChamp)>=0.3) bits.push(`${L.insTitle} ${m.dChamp>0?'+':''}${m.dChamp.toFixed(1)}`);
+    if (Math.abs(m.dR32)>=0.5)  bits.push(`${L.insQual} ${m.dR32>0?'+':''}${m.dR32.toFixed(1)}`);
+    return `<div class="ins-row ${m.dir>0?'up':'down'}">
+      <span>${TEAMS[m.t].f} ${tName(m.t)}</span><span>${m.dir>0?'▲':'▼'} ${bits.join(" • ")||""}</span>
+    </div>`;
+  };
+  box.style.display = "block";
+  box.innerHTML = `<h3>${L.insH}</h3><div class="ins-sub">${L.insSub}</div>
+    ${ups.length?`<div class="ins-col-h up">${L.insUp}</div>`+ups.map(row).join(""):""}
+    ${downs.length?`<div class="ins-col-h down">${L.insDown}</div>`+downs.map(row).join(""):""}`;
+}
 // ---------- UI ----------
 // ---------- I18N ----------
 let LANG = "ar";
@@ -512,6 +735,12 @@ ar:{
  hKsa:"🇸🇦 رحلة الأخضر", nKsa:"مجموعة H: إسبانيا، أوروغواي، السعودية، الرأس الأخضر — احتمالات الصقور في كل دور",
  ksaCard:"المنتخب السعودي", ksaWait:"شغّل المحاكاة لعرض النتائج…", opts:["2,000 (سريع)","10,000 (موصى به)","20,000 (دقة أعلى)"],
  ksaSub:(n,p)=>`من واقع ${n.toLocaleString("ar-SA")} محاكاة — احتمال تجاوز المجموعة: ${p}`,
+ hFix:"🎯 المباريات والنتائج", nFix:"كل مباريات دور المجموعات: النتائج الفعلية تُجلب تلقائيًا وتُثبّت في المحاكاة، والمباريات القادمة تظهر باحتمالات النموذج",
+ vs:"ضد", played:"✓ نتيجة رسمية — مثبّتة في المحاكاة", likely:"الأرجح",
+ liveOk:(n,t)=>`النتائج محدثة تلقائيًا — ${n} مباراة منتهية • آخر مزامنة ${t}`,
+ liveOff:"تعذر الاتصال بمصدر النتائج — يتم العرض وفق آخر بيانات مضمّنة",
+ insH:"📈 أبرز التغيرات منذ انطلاق البطولة", insSub:"مقارنة بالاحتمالات الأساسية قبل البطولة (11 يونيو) — بالنقاط المئوية",
+ insUp:"ارتفعت حظوظهم", insDown:"تراجعت حظوظهم", insTitle:"اللقب", insQual:"التأهل",
  hGrp:"المجموعات: احتمالات التأهل",
  nGrp:"النسبة = احتمال بلوغ دور الـ32 (المركز الأول أو الثاني، أو ضمن أفضل 8 منتخبات تحتل المركز الثالث)",
  grpWord:"المجموعة", grpHint:"احتمال التأهل لدور الـ32", topWord:"صدارة",
@@ -523,7 +752,9 @@ ar:{
 <p><strong>2) محاكاة المباراة:</strong> فارق التقييم <code>dr = elo_A − elo_B</code> يُترجم لمعدل أهداف متوقع لكل فريق: <code>λ_A = 1.32 × e^(dr/480)</code> ثم تُسحب الأهداف من توزيع بواسون <code>Goals ~ Poisson(λ)</code>. في الأدوار الإقصائية: تعادل ← وقت إضافي (بواسون بثلث المعدل) ← ركلات ترجيح مرجّحة بفارق Elo.</p>
 <p><strong>3) هيكل البطولة:</strong> 12 مجموعة × 4، يتأهل الأول والثاني + أفضل 8 ثوالث (ترتيب الثوالث: نقاط ← فارق أهداف ← أهداف مسجلة). توزيع أصحاب المركز الثالث على شجرة دور الـ32 وفق قيود الجدول الرسمي (بتقريب عشوائي عند تعدد الحلول الصالحة).</p>
 <p><strong>4) مونت كارلو:</strong> تُعاد محاكاة البطولة كاملة آلاف المرات، والاحتمال = نسبة مرات بلوغ المنتخب للدور. هامش الخطأ عند 10,000 محاكاة ≈ ±1%.</p>
-<p style="margin-top:8px"><strong>تنبيه:</strong> النموذج لا يأخذ بالاعتبار الإصابات، جاهزية اللاعبين، أو عوامل تكتيكية — تقييم Elo يلخّص القوة التاريخية الحديثة فقط.</p>`,
+<p><strong>5) النتائج الحية والمحاكاة الشرطية:</strong> تُجلب نتائج المباريات المنتهية تلقائيًا من قاعدة بيانات openfootball المفتوحة عند كل فتح للصفحة (تتحدث يوميًا). النتائج الرسمية <code>تُثبَّت</code> في المحاكاة، ويُعاد حساب احتمالات ما تبقى من البطولة شرطيًا بناءً عليها.</p>
+<p><strong>6) خط الأساس والتغيرات:</strong> احتمالات ما قبل البطولة محسوبة مسبقًا بـ<code>50,000</code> محاكاة ومجمّدة بتاريخ 11 يونيو 2026. المؤشرات (▲▼) وقسم "أبرز التغيرات" يقيسان الفرق بالنقاط المئوية بين الاحتمالات الحالية وخط الأساس — أي أنها تعكس أثر النتائج الفعلية فقط.</p>
+<p style="margin-top:8px"><strong>تنبيه:</strong> النموذج لا يأخذ بالاعتبار الإصابات، جاهزية اللاعبين، أو عوامل تكتيكية — تقييم Elo يلخّص القوة التاريخية الحديثة فقط. فروقات أقل من ±0.3 نقطة تقع ضمن هامش ضوضاء مونت كارلو ولا تُعرض.</p>`,
  footer:"نموذج إحصائي تعليمي — بواسون × مونت كارلو × Elo • كأس العالم 2026 (أمريكا، كندا، المكسيك) • د. خالد القحطاني"
 },
 en:{
@@ -535,6 +766,12 @@ en:{
  hKsa:"🇸🇦 The Green Falcons' road", nKsa:"Group H: Spain, Uruguay, Saudi Arabia, Cape Verde — Saudi probabilities at every stage",
  ksaCard:"Saudi Arabia", ksaWait:"Run the simulation to see results…", opts:["2,000 (fast)","10,000 (recommended)","20,000 (higher precision)"],
  ksaSub:(n,p)=>`Based on ${n.toLocaleString("en-US")} simulations — probability of advancing from the group: ${p}`,
+ hFix:"🎯 Fixtures & results", nFix:"Every group-stage fixture: real results are fetched automatically and locked into the simulation; upcoming matches show model probabilities",
+ vs:"vs", played:"✓ Official result — locked into the simulation", likely:"Likely",
+ liveOk:(n,t)=>`Results auto-updated — ${n} matches finished • last sync ${t}`,
+ liveOff:"Could not reach the results feed — showing last embedded data",
+ insH:"📈 Biggest movers since kickoff", insSub:"Compared with the frozen pre-tournament baseline (June 11) — in percentage points",
+ insUp:"Odds up", insDown:"Odds down", insTitle:"Title", insQual:"Qualify",
  hGrp:"Groups: qualification probabilities",
  nGrp:"Value = probability of reaching the Round of 32 (top two, or among the 8 best third-placed teams)",
  grpWord:"Group", grpHint:"Prob. of reaching Round of 32", topWord:"1st",
@@ -546,7 +783,9 @@ en:{
 <p><strong>2) Match simulation:</strong> the rating gap <code>dr = elo_A − elo_B</code> maps to each team's expected goal rate <code>λ_A = 1.32 × e^(dr/480)</code>, with goals drawn from <code>Goals ~ Poisson(λ)</code>. Knockouts: draw → extra time (Poisson at one-third rate) → penalties tilted by the Elo gap.</p>
 <p><strong>3) Tournament structure:</strong> 12 groups of 4; top two qualify plus the 8 best third-placed teams (ranked by points → goal difference → goals scored). Third-placed teams are allocated to the Round-of-32 bracket under the official table constraints (random tie-breaking among valid assignments).</p>
 <p><strong>4) Monte Carlo:</strong> the full tournament is replayed thousands of times; each probability = the share of runs in which a team reaches that stage. Margin of error at 10,000 runs ≈ ±1%.</p>
-<p style="margin-top:8px"><strong>Note:</strong> the model ignores injuries, squad readiness and tactics — Elo summarizes recent historical strength only.</p>`,
+<p><strong>5) Live results & conditional simulation:</strong> finished-match results are fetched automatically from the open openfootball dataset on every page load (updated daily). Official results are <code>locked</code> into the simulation, and the remainder of the tournament is re-simulated conditionally on them.</p>
+<p><strong>6) Baseline & movers:</strong> pre-tournament probabilities were pre-computed with <code>50,000</code> simulations and frozen on June 11, 2026. The ▲▼ indicators and the "Biggest movers" panel measure the percentage-point difference between current probabilities and that baseline — i.e., they isolate the impact of actual results.</p>
+<p style="margin-top:8px"><strong>Note:</strong> the model ignores injuries, squad readiness and tactics — Elo summarizes recent historical strength only. Differences below ±0.3 points fall within Monte Carlo noise and are not displayed.</p>`,
  footer:"Educational statistical model — Poisson × Monte Carlo × Elo • World Cup 2026 (USA, Canada, Mexico) • Dr. Khaled Alqahtani"
 }
 };
@@ -569,6 +808,10 @@ function applyLang(){
   document.getElementById("t-n-ksa").textContent = L.nKsa;
   document.getElementById("t-ksa-card").textContent = L.ksaCard;
   if (!lastStats) document.getElementById("ksaSub").textContent = L.ksaWait;
+  document.getElementById("t-h-fix").textContent = L.hFix;
+  document.getElementById("t-n-fix").textContent = L.nFix;
+  renderFixtures();
+  updateLiveStatus();
   document.getElementById("t-h-grp").textContent = L.hGrp;
   document.getElementById("t-n-grp").textContent = L.nGrp;
   document.getElementById("t-h-tbl").textContent = L.hTbl;
@@ -608,7 +851,7 @@ function render(stats, N){
       <div class="flag">${d.f}</div>
       <div class="name">${i+1}. ${tName(t)}</div>
       <div class="track"><div class="fill" data-w="${(100*stats[t].champ/maxC).toFixed(1)}"></div></div>
-      <div class="pct">${fmt(stats[t].champ,N)}</div>`;
+      <div class="pct">${fmt(stats[t].champ,N)}${Object.keys(FIXED).length?deltaBadge(100*stats[t].champ/N, BASELINE[t].champ):""}</div>`;
     cWrap.appendChild(row);
   });
   requestAnimationFrame(()=> {
@@ -621,9 +864,10 @@ function render(stats, N){
   const vals = [k.r32, k.r16, k.qf, k.sf, k.fin, k.champ];
   const stages = I18N[LANG].stages.map((l,i)=>[l, vals[i]]);
   document.getElementById("ksaStages").innerHTML = stages.map(([l,v],i)=>
-    `<div class="stage ${i===0?'hot':''}"><div class="lbl">${l}</div><div class="val">${fmt(v,N)}</div></div>`
+    `<div class="stage ${i===0?'hot':''}"><div class="lbl">${l}</div><div class="val">${fmt(v,N)}${i===0&&Object.keys(FIXED).length?deltaBadge(100*v/N, BASELINE.KSA.r32):""}</div></div>`
   ).join("");
 
+  renderInsights(stats, N);
   // groups
   const gWrap = document.getElementById("groups");
   gWrap.innerHTML = "";
@@ -659,7 +903,7 @@ function render(stats, N){
     return `<tr class="${t==="KSA"?"is-ksa":""}">
       <td>${d.f} ${tName(t)}</td><td>${d.g}</td>
       ${cell(s.r32)}${cell(s.r16)}${cell(s.qf)}${cell(s.sf)}${cell(s.fin)}
-      <td class="champ">${fmt(s.champ,N)}</td>
+      <td class="champ">${fmt(s.champ,N)}${Object.keys(FIXED).length?deltaBadge(100*s.champ/N, BASELINE[t].champ):""}</td>
     </tr>`;
   }).join("");
 }
@@ -695,7 +939,12 @@ function runSim(){
 
 // auto-run on load
 if (typeof document !== "undefined"){
-  window.addEventListener("load", ()=>{ applyLang(); setTimeout(runSim, 350); });
+  window.addEventListener("load", async ()=>{
+    applyLang();
+    await loadLiveResults();
+    renderFixtures();
+    runSim();
+  });
 }
 </script>
 </body>
